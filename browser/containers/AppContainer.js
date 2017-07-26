@@ -5,6 +5,7 @@ import assert from 'assert';
 
 
 const permanentJsonUrl = 'https://www.nycgovparks.org//art-monuments-map/json'
+const mongoUrl = 'mongodb://localhost:27017/publicArtVis';
 
 export default class AppContainer extends React.Component {
 	constructor(props) {
@@ -12,19 +13,22 @@ export default class AppContainer extends React.Component {
 	}
 
 	componentDidMount() {
-		axios.get(permanentJsonUrl)
-		.then(res => res.data)
-		.then(result => {
-			console.log(result);
-			// MongoClient.connect(url, function(err, db) {
-			//   assert.equal(null, err);
+		// let mc = new MongoClient();
+		// console.log(mc);
+		// axios.get(permanentJsonUrl)
+		// .then(res => res.data)
+		// .then(result => {
+		// 	console.log(result);
+		// 	mc.connect(mongoUrl, {}, function(err, db) {
+		// 		console.log("err: ", err)
+		// 	  assert.equal(null, err);
 			  
-			//   this.insertDocuments(db, function() {
-			//     db.close();
-			//   })
-			// });
+		// 	  this.insertDocuments(db, function() {
+		// 	    db.close();
+		// 	  })
+		// 	});
 
-		})
+		// }).catch(console.error)
 	}
 
 	insertDocuments(db, callback) {
