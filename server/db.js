@@ -13,6 +13,7 @@ MongoClient.connect(url, function(err, db) {
   createCapped(db, function() {
     db.close();
   });
+  
   insertDocuments(db, function() {
     db.close();
   })

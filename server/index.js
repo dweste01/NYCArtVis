@@ -19,27 +19,6 @@ app.use('/files', express.static(path.join(__dirname, '../public')));
 
 app.use(express.static(path.join(__dirname, '../node_modules')))
 
-app.get('/', (req, res, next) => {
-	let c = req.query.code;
-	if (c) {
-
-		let formData = {
-			'client_id': process.env.INSTA_CID,
-			'client_secret': process.env.INSTA_SECRET,
-			'grant_type': 'authorization_code',
-			'redirect_uri': 'https://live2eat.herokuapp.com/',
-			'code': c
-		}
-
-		let ajaxReq = new XMLHttpRequest();
-		ajaxReq.open("POST", formData, true);
-		ajaxReq.send();
-
-	} else {
-		res.sendFile(path.join(__dirname, '../browser/index.html'))
-	}
-})
-
 app.get('/*', function (req, res) {
   res.sendFile(path.join(__dirname, '../browser/index.html'))
 });

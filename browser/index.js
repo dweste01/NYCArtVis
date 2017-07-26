@@ -6,18 +6,7 @@ import { Provider } from 'react-redux';
 import axios from 'axios'
 import AppContainer from './containers/AppContainer';
 
-const permanentJsonUrl = 'https://www.nycgovparks.org//art-monuments-map/json'
-
-const onAppEnter = function() {
-	console.log("helloooo")
-	axios.get(permanentJsonUrl)
-	.then(res => res.data)
-	.then(result => {
-		console.log(result);
-	})
-}
-
 ReactDOM.render(
-  <AppContainer onEnter={onAppEnter} />,
+  <AppContainer />,
   document.getElementById('app')
 );

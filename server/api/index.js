@@ -1,6 +1,5 @@
 const router = require('express').Router();
 
-router.use('/permanent', require('./permanent'));
 
 
 router.use(function (req, res, next) {
