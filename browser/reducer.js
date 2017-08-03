@@ -1,6 +1,8 @@
 // import constants from action creators
 
-const initialState = {};
+const initialState = {
+	permPOIs: []
+};
 
 
 
@@ -8,15 +10,15 @@ export default function (state = initialState, action) {
 
   const newState = Object.assign({}, state)
 
-  // switch (action.type) {
+  switch (action.type) {
 
-  // 	case TOGGLE_DELIVERY:
-  // 		newState.delivery = action.delivery;
-  // 		break;
-  //   default:
-  //     return state;
+  	case TOGGLE_DELIVERY:
+  		newState.permPOIs = action.permPOIs;
+  		break;
+    default:
+      return state;
       
-  // }
+  }
   return newState;
 
 }
