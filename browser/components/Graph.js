@@ -37,7 +37,7 @@ export default (props) => {
 	console.log(coordinates);
 
 	// get element
-	const vis = d3.select("#visualization");
+	const vis = d3.select('#visualization');
 	// set constants
     const graphWidth = 1000;
     const graphHeight = 500;
@@ -53,16 +53,16 @@ export default (props) => {
     const yScale = d3.scaleLinear().range([graphHeight - graphMargins.top, graphMargins.bottom]).domain([0,45])
 
     //make each axis
-    const xAxis = d3.axisBottom().scale(xScale).tickFormat(d3.format("d"));
+    const xAxis = d3.axisBottom().scale(xScale).tickFormat(d3.format('d'));
     const yAxis = d3.axisLeft().scale(yScale);
 
-    // append each axis to #visualization elem
+    // append each axis to #visualization elem in correct place
     vis.append('svg:g')
-    	.attr("transform", "translate(0," + (graphHeight - graphMargins.bottom) + ")")
+    	.attr('transform', 'translate(0,' + (graphHeight - graphMargins.bottom) + ')')
     	.call(xAxis);
 
     vis.append('svg:g')
-    	.attr("transform", "translate(" + (graphMargins.left) + ",0)")
+    	.attr('transform', 'translate(' + (graphMargins.left) + ',0)')
     	.call(yAxis);
 
     // draw line based on data
@@ -75,6 +75,13 @@ export default (props) => {
     	.attr('stroke', 'blue')
     	.attr('stroke-width', 1)
     	.attr('fill', 'none')
+
+    // add title
+    vis.append('text')
+        .attr('x', (graphWidth / 2))
+        .attr('y', 0 - (graphMargins.top / 2))
+        .attr('text-anchor', 'middle')
+        .text('NYC Parks Monuments by Dedication Year');
 
 	return (<div></div>)
 }
