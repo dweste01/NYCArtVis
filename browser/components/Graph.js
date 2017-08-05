@@ -2,28 +2,33 @@ import React from 'react';
 import * as d3 from 'd3'
 
 export default (props) => {
-	// const scale = d3.scaleLinear();
-	// const yAxis = d3.axisLeft(scale);
-	// const xAxis = d3.axisBottom(scale);
 
-	// xAxis.ticks(10);
-	// yAxis.ticks(10);
+	//calculate POIs per year
+	const dataSet = {'unknown': 0};
 
-	// d3.select("#graph").append("svg")
-	// .attr("width", 80)
-	// .attr("height", 80)
-	// .append("g")
-	// .attr("transform", "translate(0,30)")
-	// .call(yAxis);
+	props.pois.forEach(poi => {
+		// undefined years
+		if (!poi.dedicated) {
+			dataSet.unknown++;
+		} else {
+			// clean date - find the first four digit number
+			let year = poi.dedicated.match(/\d{4}/)
+			if (year) {
+				// insert or increment
+				if (dataSet[year[0]]) {
+					dataSet[year[0]]++;
+				} else {
+					dataSet[year[0]] = 1;
+				}
+			} else {
+				dataSet['unknown']++;
+			}
+		}
+	})
 
-	// d3.select("#graph").append("svg")
-	// .attr("width", 80)
-	// .attr("height", 80)
-	// .append("g")
-	// .attr("transform", "translate(0,30)")
-	// .call(xAxis);
-
-	const vis = d3.select("#visualisation");
+	// get element
+	const vis = d3.select("#visualization");
+	// set constants
     const graphWidth = 1000;
     const graphHeight = 500;
     const graphMargins = {
@@ -33,12 +38,15 @@ export default (props) => {
         left: 50
     }
 
+    //make scales for each axis
     const xScale = d3.scaleLinear().range([graphMargins.left, graphWidth - graphMargins.right]).domain([0,2017])
     const yScale = d3.scaleLinear().range([graphHeight - graphMargins.top, graphMargins.bottom]).domain([0,215])
 
+    //make each axis
     const xAxis = d3.axisBottom().scale(xScale);
     const yAxis = d3.axisLeft().scale(yScale);
 
+    // append each axis to #visualization
     vis.append('svg:g')
     	.attr("transform", "translate(0," + (graphHeight - graphMargins.bottom) + ")")
     	.call(xAxis);
@@ -48,7 +56,5 @@ export default (props) => {
     	.call(yAxis);
 
 
-	return (
-		<p>Graph!</p>
-	)
+	return (<div></div>)
 }
