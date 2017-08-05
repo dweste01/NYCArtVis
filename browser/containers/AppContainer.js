@@ -20,7 +20,6 @@ export default class AppContainer extends React.Component {
 		axios.get(permanentJsonUrl)
 		.then(res => {
 			let r = res.data;
-			console.log(r);
 			this.setState({'permPOIs': r})
 		})
 		.catch(console.error)
@@ -29,13 +28,6 @@ export default class AppContainer extends React.Component {
 	render() {
 		return (
 			<div>
-				<div>
-				{
-					this.state.permPOIs.map((poi, idx) => {
-						return (<span key={idx}> {poi.name}</span>)
-					})
-				}
-				</div>
 				<svg id="visualization" width="1000" height="500"></svg>
 				<Graph pois={this.state.permPOIs}/>
 			</div>

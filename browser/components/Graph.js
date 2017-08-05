@@ -1,27 +1,30 @@
 import React from 'react';
-import * as d3 from 'd3'
+import * as d3 from 'd3';
+import ByYear from './POIsByYear'
 
 export default (props) => {
 
 	//calculate POIs per year
-	const dataSet = {'unknown': 0};
+	const dataSet = {
+		'Unknown Date': []
+	};
 
 	props.pois.forEach(poi => {
 		// undefined years
 		if (!poi.dedicated) {
-			dataSet.unknown++;
+			dataSet['Unknown Date'].push(poi);
 		} else {
 			// clean date - find the first four digit number
 			let year = poi.dedicated.match(/\d{4}/)
 			if (year) {
 				// insert or increment
 				if (dataSet[year[0]]) {
-					dataSet[year[0]]++;
+					dataSet[year[0]].push(poi);
 				} else {
-					dataSet[year[0]] = 1;
+					dataSet[year[0]] = [poi];
 				}
 			} else {
-				dataSet['unknown']++;
+				dataSet['Unknown Date'].push(poi);
 			}
 		}
 	})
@@ -30,11 +33,10 @@ export default (props) => {
 	for (let key in dataSet) {
 		let newYearObj = {
 			'year': key,
-			'numPOIs': dataSet[key]
+			'numPOIs': dataSet[key].length
 		}
 		coordinates.push(newYearObj);
 	}
-	console.log(coordinates);
 
 	// get element
 	const vis = d3.select('#visualization');
@@ -83,5 +85,9 @@ export default (props) => {
         .attr('text-anchor', 'middle')
         .text('NYC Parks Monuments by Dedication Year');
 
-	return (<div></div>)
+	return (
+		<div className='row justify-content-md-center'>
+			<ByYear byYear={dataSet} />
+		</div>
+	)
 }
