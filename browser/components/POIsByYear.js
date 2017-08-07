@@ -14,7 +14,7 @@ export default (props) => {
 
   return (
     <div className='col-md-6'>
-      <div id='accordion' role='tablist' aria-multiselectable='true'>
+      <div id="accordion" role="tablist" aria-multiselectable="true">
       {
         byYearArray.length>1 && byYearArray.map((yearobj, idx) => {
           let toggleCardId = yearobj.year + 'content';
@@ -23,9 +23,9 @@ export default (props) => {
               <div key={idx} className='card'>
                 <div className='card-header' role='tab' id={yearobj.year}>
                   <h1 className='mb-0'>
-                    <a data-toggle='collapse' data-parent='#accordion' href={'#' + toggleCardId} aria-expanded='false' aria-controls={toggleCardId}>
+                    <button className='btn btn-block collapsed' data-toggle='collapse' data-parent='#accordion' data-target={'#' + toggleCardId} aria-expanded='false' aria-controls={toggleCardId}>
                       {yearobj.year}
-                    </a>
+                    </button>
                   </h1>
                 </div>
 
