@@ -2,6 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import * as d3 from 'd3'
 import Graph from '../components/Graph'
+import NYCMap from '../components/NYCMap'
 
 
 const permanentJsonUrl = 'https://data.cityofnewyork.us/resource/g77k-nifh.json'
@@ -29,7 +30,9 @@ export default class AppContainer extends React.Component {
 		return (
 			<div>
 				<svg id="visualization" width="1000" height="500"></svg>
+				<svg id="nycmap" width="1000" height="500"></svg>
 				<Graph pois={this.state.permPOIs}/>
+				<NYCMap />
 			</div>
 		)
 	}

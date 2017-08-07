@@ -6,13 +6,13 @@ export default (props) => {
 
 	//calculate POIs per year
 	const dataSet = {
-		'Unknown Date': []
+		'Unknown': []
 	};
 
 	props.pois.forEach(poi => {
 		// undefined years
 		if (!poi.dedicated) {
-			dataSet['Unknown Date'].push(poi);
+			dataSet['Unknown'].push(poi);
 		} else {
 			// clean date - find the first four digit number
 			let year = poi.dedicated.match(/\d{4}/)
@@ -24,7 +24,7 @@ export default (props) => {
 					dataSet[year[0]] = [poi];
 				}
 			} else {
-				dataSet['Unknown Date'].push(poi);
+				dataSet['Unknown'].push(poi);
 			}
 		}
 	})
