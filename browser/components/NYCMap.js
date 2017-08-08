@@ -11,7 +11,7 @@ export default class NYCMap extends React.Component {
   }
 
   componentDidMount () {
-    axios.get('http://services5.arcgis.com/GfwWNkhOj9bNBqoJ/arcgis/rest/services/nybb/FeatureServer/0/query?where=1=1&outFields=*&outSR=4326&f=geojson')
+    axios.get('https://services5.arcgis.com/GfwWNkhOj9bNBqoJ/arcgis/rest/services/nybb/FeatureServer/0/query?where=1=1&outFields=*&outSR=4326&f=geojson')
     .then(res => {
       let boroArray = [];
       res.data.features.forEach(boro => {
