@@ -31,8 +31,8 @@ export default class AppContainer extends React.Component {
 			<div>
 				<svg id="visualization" width="1000" height="500"></svg>
 				<svg id="nycmap" width="1000" height="500"></svg>
-				<Graph pois={this.state.permPOIs}/>
 				<NYCMap />
+				<Graph pois={this.state.permPOIs}/>
 			</div>
 		)
 	}
