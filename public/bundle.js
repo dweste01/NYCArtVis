@@ -43836,8 +43836,8 @@ var AppContainer = function (_React$Component) {
 				null,
 				_react2.default.createElement('svg', { id: 'visualization', width: '1000', height: '500' }),
 				_react2.default.createElement('svg', { id: 'nycmap', width: '1000', height: '500' }),
-				_react2.default.createElement(_Graph2.default, { pois: this.state.permPOIs }),
-				_react2.default.createElement(_NYCMap2.default, null)
+				_react2.default.createElement(_NYCMap2.default, null),
+				_react2.default.createElement(_Graph2.default, { pois: this.state.permPOIs })
 			);
 		}
 	}]);
