@@ -6,43 +6,18 @@ export default class NYCMap extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      'boros': []
+      'done': false
     }
   }
 
   componentDidMount () {
-    axios.get('https://services5.arcgis.com/GfwWNkhOj9bNBqoJ/arcgis/rest/services/nybb/FeatureServer/0/query?where=1=1&outFields=*&outSR=4326&f=geojson')
-    .then(res => {
-      let boroArray = [];
-      res.data.features.forEach(boro => {
-        let boroCoords = [];
-        // flatten array of arrays; get coordinates for each boro
-        boro.geometry.coordinates.forEach(firstLevel => {
-          firstLevel.forEach(secondLevel => {
-            secondLevel.forEach(thirdLevel => {
-              let newCoord = {
-                'lng': thirdLevel[0],
-                'lat': thirdLevel[1]
-              }
-              boroCoords.push(newCoord);
-            })
-          })
-        })
-        let boroObj = {
-          'coords': boroCoords,
-          'boroname': boro.properties.BoroName
-        }
-        console.log(boroObj)
-        boroArray.push(boroObj);
-      })
-
-      const mapWidth = 1200;
-      const mapHeight = 1200;
+      const mapWidth = 1400;
+      const mapHeight = 1400;
       const mapMargins = {
         top: 20,
         right: 20,
         bottom: 20,
-        left: 50
+        left: 250
       }
 
       //make scales for each axis
@@ -53,36 +28,41 @@ export default class NYCMap extends React.Component {
                 .x(d => (xScale(d.lng)))
                 .y(d => (yScale(d.lat)))
 
-      boroArray.forEach(b => {
-        d3.select('#nycmap').append('svg:path')
-          .attr('d', drawLine(b.coords))
-          .attr('stroke', 'blue')
-          .attr('stroke-width', 1)
-          .attr('fill', 'none')
+    axios.get('https://services5.arcgis.com/GfwWNkhOj9bNBqoJ/arcgis/rest/services/nybb/FeatureServer/0/query?where=1=1&outFields=*&outSR=4326&f=geojson')
+    .then(res => {
+      res.data.features.forEach(boro => {
+        console.log(boro)
+        boro.geometry.coordinates.forEach(firstLevel => {
+          firstLevel.forEach(secondLevel => {
+            let boroCoords = [];
+            secondLevel.forEach(thirdLevel => {
+              let newCoord = {
+                'lng': thirdLevel[0],
+                'lat': thirdLevel[1]
+              }
+              boroCoords.push(newCoord);
+            })
+            d3.select('#nycmap').append('svg:path')
+              .attr('d', drawLine(boroCoords))
+              .attr('stroke', 'blue')
+              .attr('class', boro.properties.BoroName)
+              .attr('stroke-width', 1)
+              .attr('fill', 'none')
+          })
+        })
       })
-
-    }).catch(console.error)
+    }).then(() => {
+      this.setState({"done": true})
+    })
+    .catch(console.error)
   }
   
   render() {
-    let name;
-    console.log('this.state.boros: ', this.state.boros)
     return (
       <div>
       {
-        // (this.state.boros.length) ?
-        // this.state.boros.map((boro, idx) => {
-        //  name = boro.properties.BoroName;
-        //  return (boro.geometry.coordinates.map((coord, idx) => {
-        //    return (
-        //      <p>{coord}</p>
-        //    )
-        //  })
-        //  // <p key={idx}>{boro.properties.BoroName}</p>
-        //  )
-        // })
-        // :
-        <p>Drawing map...</p>
+        (this.state.done) ? null 
+        : <p>Drawing map...</p>
       }
       </div>
     )

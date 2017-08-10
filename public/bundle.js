@@ -44128,7 +44128,7 @@ var NYCMap = function (_React$Component) {
     var _this = _possibleConstructorReturn(this, (NYCMap.__proto__ || Object.getPrototypeOf(NYCMap)).call(this, props));
 
     _this.state = {
-      'boros': []
+      'done': false
     };
     return _this;
   }
@@ -44136,13 +44136,32 @@ var NYCMap = function (_React$Component) {
   _createClass(NYCMap, [{
     key: 'componentDidMount',
     value: function componentDidMount() {
+      var _this2 = this;
+
+      var mapWidth = 1400;
+      var mapHeight = 1400;
+      var mapMargins = {
+        top: 20,
+        right: 20,
+        bottom: 20,
+        left: 250
+
+        //make scales for each axis
+      };var xScale = d3.scaleLinear().range([mapMargins.left, mapWidth - mapMargins.right]).domain([-74.3, -73]);
+      var yScale = d3.scaleLinear().range([mapHeight - mapMargins.top, mapMargins.bottom]).domain([39.85, 40.95]);
+
+      var drawLine = d3.line().x(function (d) {
+        return xScale(d.lng);
+      }).y(function (d) {
+        return yScale(d.lat);
+      });
+
       _axios2.default.get('https://services5.arcgis.com/GfwWNkhOj9bNBqoJ/arcgis/rest/services/nybb/FeatureServer/0/query?where=1=1&outFields=*&outSR=4326&f=geojson').then(function (res) {
-        var boroArray = [];
         res.data.features.forEach(function (boro) {
-          var boroCoords = [];
-          // flatten array of arrays; get coordinates for each boro
+          console.log(boro);
           boro.geometry.coordinates.forEach(function (firstLevel) {
             firstLevel.forEach(function (secondLevel) {
+              var boroCoords = [];
               secondLevel.forEach(function (thirdLevel) {
                 var newCoord = {
                   'lng': thirdLevel[0],
@@ -44150,61 +44169,21 @@ var NYCMap = function (_React$Component) {
                 };
                 boroCoords.push(newCoord);
               });
+              d3.select('#nycmap').append('svg:path').attr('d', drawLine(boroCoords)).attr('stroke', 'blue').attr('class', boro.properties.BoroName).attr('stroke-width', 1).attr('fill', 'none');
             });
           });
-          var boroObj = {
-            'coords': boroCoords,
-            'boroname': boro.properties.BoroName
-          };
-          console.log(boroObj);
-          boroArray.push(boroObj);
         });
-
-        var mapWidth = 1200;
-        var mapHeight = 1200;
-        var mapMargins = {
-          top: 20,
-          right: 20,
-          bottom: 20,
-          left: 50
-
-          //make scales for each axis
-        };var xScale = d3.scaleLinear().range([mapMargins.left, mapWidth - mapMargins.right]).domain([-74.3, -73]);
-        var yScale = d3.scaleLinear().range([mapHeight - mapMargins.top, mapMargins.bottom]).domain([39.85, 40.95]);
-
-        var drawLine = d3.line().x(function (d) {
-          return xScale(d.lng);
-        }).y(function (d) {
-          return yScale(d.lat);
-        });
-
-        boroArray.forEach(function (b) {
-          d3.select('#nycmap').append('svg:path').attr('d', drawLine(b.coords)).attr('stroke', 'blue').attr('stroke-width', 1).attr('fill', 'none');
-        });
+      }).then(function () {
+        _this2.setState({ "done": true });
       }).catch(console.error);
     }
   }, {
     key: 'render',
     value: function render() {
-      var name = void 0;
-      console.log('this.state.boros: ', this.state.boros);
       return _react2.default.createElement(
         'div',
         null,
-
-        // (this.state.boros.length) ?
-        // this.state.boros.map((boro, idx) => {
-        //  name = boro.properties.BoroName;
-        //  return (boro.geometry.coordinates.map((coord, idx) => {
-        //    return (
-        //      <p>{coord}</p>
-        //    )
-        //  })
-        //  // <p key={idx}>{boro.properties.BoroName}</p>
-        //  )
-        // })
-        // :
-        _react2.default.createElement(
+        this.state.done ? null : _react2.default.createElement(
           'p',
           null,
           'Drawing map...'
